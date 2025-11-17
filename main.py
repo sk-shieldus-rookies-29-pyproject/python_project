@@ -2,7 +2,7 @@ import google_calendar_use
 import slack_weather
 
 def main():
-    print("=== 통합 자동화 작업 시작 ===")
+    print("=== 통합 작업 시작 ===")
 
     print("\n>> [Step 1] Google Calendar 작업 실행")
     try:
