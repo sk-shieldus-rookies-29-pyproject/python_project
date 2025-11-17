@@ -29,3 +29,7 @@ Thumbs.db  # Windows 파일
 
 *.json
 *.env
+
+#github_slack
+.env
+github_action_alert/.env
