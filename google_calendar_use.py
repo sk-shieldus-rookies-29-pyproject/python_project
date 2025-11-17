@@ -1,31 +1,35 @@
 import datetime
 import os
-
+import requests
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
 from dotenv import load_dotenv
 
 load_dotenv()
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
-SLACK_API_TOKEN = os.getenv("SLACK_API_TOKEN")
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
+SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL')
 
-def send_message(channel, text):
-    client = WebClient(token=SLACK_API_TOKEN)
+def send_slack(text: str):
+    """Webhook으로 메시지 전송 (간단, 안정적, 통일)"""
+    if not SLACK_WEBHOOK_URL:
+        print("SLACK_WEBHOOK_URL이 없습니다. .env 확인!")
+        return
+
     try:
-        response = client.chat_postMessage(
-            channel=channel,
-            text=text
+        response = requests.post(
+            SLACK_WEBHOOK_URL,
+            json={"text": text},
+            timeout=10
         )
-        print(f"슬랙 메시지 전송 성공: {response['ts']}")
-    except SlackApiError as e:
-        print(f"슬랙 메시지 전송 오류: {e.response['error']}")
-
+        if response.status_code == 200:
+            print("Slack 전송 성공")
+        else:
+            print(f"Slack 전송 실패: {response.status_code} {response.text}")
+    except Exception as e:
+        print(f"Slack 전송 예외: {e}")
 def fetch_calendar_and_send_to_slack():
     
     creds = None
@@ -95,13 +99,11 @@ def fetch_calendar_and_send_to_slack():
         print("--- 최종 리포트 ---")
         print(report_text) 
         print("--------------------")
-        
-        send_message(SLACK_CHANNEL, report_text)
-
+        send_slack(report_text)
     except HttpError as error:
         error_message = f"🚨 캘린더 API 오류가 발생했습니다: {error}"
         print(error_message)
-        send_message(SLACK_CHANNEL, error_message) 
+        send_slack(SLACK_WEBHOOK_URL, error_message) 
 
 
 if __name__ == "__main__":
