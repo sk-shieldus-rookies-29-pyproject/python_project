@@ -121,11 +121,14 @@ def main():
 
     print(f"[INFO] 가져온 이벤트 개수: {len(events)}")
 
+    # 1) 레포에 이벤트 자체가 없을 때
     if not events:
-        print("[INFO] 이벤트가 없습니다.")
+        msg = "ℹ️ GitHub 액션 없음: 현재 레포에 등록된 이벤트가 없습니다."
+        print("[INFO]", msg)
+        send_slack_message(msg)
         return
 
-    # 새 이벤트만 모으기
+    # 2) 마지막 이벤트 이후의 새 이벤트 모으기
     new_events = []
     for ev in events:
         ev_id = ev.get("id")
@@ -136,12 +139,17 @@ def main():
 
         new_events.append(ev)
 
+    # 3) 새 이벤트가 전혀 없을 때
     if not new_events:
-        print("[INFO] 새로운 이벤트가 없습니다.")
+        msg = "ℹ️ GitHub 액션 없음: 마지막 체크 이후 새로운 이벤트가 없습니다."
+        print("[INFO]", msg)
+        send_slack_message(msg)
         return
 
     # 오래된 것부터 순서대로 보내려고 뒤집기
     new_events.reverse()
+
+    sent_count = 0  # 실제로 Slack에 보낸 메시지 개수
 
     for ev in new_events:
         ev_type = ev.get("type")
@@ -152,7 +160,7 @@ def main():
         elif ev_type == "PullRequestEvent":
             msg = format_pr_event(ev)
         else:
-            # Push / PR 말고는 무시
+            # Push / PR 말고는 "액션"으로 보지 않고 무시
             continue
 
         if msg:
@@ -160,12 +168,20 @@ def main():
             print(msg)
             print("--------------------------------")
             send_slack_message(msg)
+            sent_count += 1
+
+    # 4) 새 이벤트는 있었지만 Push/PR가 하나도 없을 때
+    if sent_count == 0:
+        msg = "ℹ️ GitHub 액션 없음: 새로운 Push/PR 이벤트가 없습니다."
+        print("[INFO]", msg)
+        send_slack_message(msg)
 
     # 이번에 가져온 이벤트 중 가장 최신 ID 저장
     newest_id = events[0].get("id")
     if newest_id:
         save_last_event_id(newest_id)
         print("[INFO] 마지막 이벤트 ID 업데이트:", newest_id)
+
 
 
 if __name__ == "__main__":
