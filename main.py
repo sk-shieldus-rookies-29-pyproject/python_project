@@ -1,9 +1,13 @@
+#pip install schedule
+import schedule
+import time
+
 import google_calendar_use
 import slack_weather
 import python_rss
 import github_evens_to_slack
 
-def main():
+def print_message():
     print("=== 통합 작업 시작 ===")
 
     print("\n>> [Step 1] 📅Google Calendar 작업 실행")
@@ -36,5 +40,12 @@ def main():
 
     print("\n=== 모든 작업이 종료되었습니다 ===")
 
-if __name__ == "__main__":
-    main()
+
+# 매일 오전 8시 50분에 실행
+# 실행 시간 런하실 때 1~2분 후로 바꿔주세요 
+schedule.every().day.at("17:50").do(print_message)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+    
