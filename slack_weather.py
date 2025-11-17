@@ -89,7 +89,7 @@ def send_to_slack(city, data):
     else:
         print('Slack 실패:', response.text)
 
-if __name__ == '__main__':
+def main():
     city = 'seoul'
     cached = models.get_cached_data(city)
     if cached:
@@ -107,3 +107,6 @@ if __name__ == '__main__':
         }
         models.save_data(city, data)
         send_to_slack(city, data)
+
+if __name__ == '__main__':
+    main()

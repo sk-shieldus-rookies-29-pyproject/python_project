@@ -25,3 +25,7 @@ mongo-data/  # 커스텀 DB 볼륨
 Thumbs.db  # Windows 파일
 
 *.bak  # 코드 백업
+
+
+*.json
+*.env
