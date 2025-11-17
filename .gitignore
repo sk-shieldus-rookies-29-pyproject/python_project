@@ -1,2 +1,27 @@
-*.json
-*.env
+# Python 기본 무시: 컴파일된 파일, 캐시
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+
+# 가상 환경 무시: venv 디렉토리 전체 (의존성 격리)
+venv/
+.venv/
+
+# 환경 변수 파일 무시: API 키 보안 (.env에 SERVICE_KEY 등)
+.env
+
+# MongoDB 로컬 데이터/로그 무시: DB 파일, 로그 (캐싱 관련)
+*.log
+data/  # MongoDB 데이터 디렉토리 (로컬 설치 시)
+mongo-data/  # 커스텀 DB 볼륨
+
+# 기타 임시 파일 무시: 에디터 백업, OS 파일
+*.swp
+*.bak
+*~
+.DS_Store  # Mac OS 파일
+Thumbs.db  # Windows 파일
+
+*.bak  # 코드 백업
