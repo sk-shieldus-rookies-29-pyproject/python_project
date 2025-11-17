@@ -1,2 +1,0 @@
-SERVICE_KEY=your_service_key_here  # 실제 기상청 키 입력
-SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL')
