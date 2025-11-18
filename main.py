@@ -43,7 +43,7 @@ def print_message():
 
 # 매일 오전 8시 50분에 실행
 # 실행 시간 런하실 때 1~2분 후로 바꿔주세요 
-schedule.every().day.at("17:50").do(print_message)
+schedule.every().day.at("09:24").do(print_message)
 
 while True:
     schedule.run_pending()
