@@ -12,6 +12,7 @@ def print_message():
 
     print("\n>> [Step 1] 📅Google Calendar 작업 실행")
     try:
+        # google_calendar_to_slack 모듈의 메인 함수를 호출합니다.
         google_calendar_to_slack.fetch_calendar_and_send_to_slack()
         print("   -> 캘린더 작업 완료")
     except Exception as e:
@@ -19,6 +20,7 @@ def print_message():
 
     print("\n>> [Step 2] ⛅Weather 작업 실행")
     try:
+        # slack_weather 모듈의 메인 함수(main)를 호출합니다.
         slack_weather.main() 
         print("   -> 날씨 작업 완료")
     except Exception as e:
@@ -26,6 +28,7 @@ def print_message():
 
     print("\n>> [Step 3] 📜보안 뉴스 rss 작업 실행")
     try:
+        # python_rss 모듈의 rss_boannews 함수를 호출합니다.
         python_rss.rss_boannews()
         print("   -> 뉴스 작업 완료")
     except Exception as e:
@@ -33,6 +36,7 @@ def print_message():
 
     print("\n>> [Step 4] 🐙깃허브 작업 실행")
     try:
+        # github_evens_to_slack 모듈의 메인 함수(main)를 호출합니다.
         github_evens_to_slack.main()
         print("   -> 깃허브 작업 완료")
     except Exception as e:
