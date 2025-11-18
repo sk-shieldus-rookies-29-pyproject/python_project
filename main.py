@@ -2,7 +2,7 @@
 import schedule
 import time
 
-import google_calendar_use
+import google_calendar_to_slack
 import slack_weather
 import python_rss
 import github_evens_to_slack
@@ -12,7 +12,7 @@ def print_message():
 
     print("\n>> [Step 1] 📅Google Calendar 작업 실행")
     try:
-        google_calendar_use.fetch_calendar_and_send_to_slack()
+        google_calendar_to_slack.fetch_calendar_and_send_to_slack()
         print("   -> 캘린더 작업 완료")
     except Exception as e:
         print(f"   [오류] 캘린더 작업 실패: {e}")
